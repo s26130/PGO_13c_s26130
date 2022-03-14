@@ -4,25 +4,19 @@ import java.util.Scanner;
 
 public class Zadadnie7 {
 
-    /*
-    Odczytaj liczbę od użytkownika i zapisz ją w zmiennej o nazwie n.
-N powinno być co najmniej 5 i liczbą nieparzystą. Jeśli użytkownik wprowadzi błędnie,
-poproś, aby spróbował ponownie, aż warunek zostanie spełniony.
-Wydrukuj rysunek używając znaku * o rozmiarze n. Na przykład, jeśli n wynosi 5:
-*****
-** *
-* * *
-* **
-*****
-     */
+    static final char CHAR = '*';
+
     public static void main(String[] args) {
-        System.out.print("Give a number: ");
-        int n = readUserNumber();
 
-        System.out.println("\n\nYou gave: " + n);
+        int n = 0;
 
-        boolean isValid = isValid(n);
-        System.out.println("Is your number valid: " + isValid);
+        do {
+            System.out.print("Give a number: ");
+            n = readUserNumber();
+        } while (! isValid(n));
+
+        printPicture(n);
+
     }
 
     static int readUserNumber() {
@@ -43,6 +37,38 @@ Wydrukuj rysunek używając znaku * o rozmiarze n. Na przykład, jeśli n wynosi
     }
 
     static void printPicture(int size) {
+        printBar(size);
 
+        // rows
+        for (int row = 0; row < size; row++)
+        {
+            // cols
+            for (int col = 0; col < size; col++){
+                if (col == 0) {
+                    System.out.print(CHAR);
+                }
+
+                if (col > 0 && col < size -1) {
+                    if (row == col) {
+                        System.out.print(CHAR);
+                    } else {
+                        System.out.print(' ');
+                    }
+                }
+
+                if (col == size -1) {
+                    System.out.println(CHAR);
+                }
+            }
+        }
+
+         printBar(size);
+    }
+
+    static void printBar(int size) {
+        for (int i = 0; i < size; i++) {
+            System.out.print(CHAR);
+        }
+        System.out.println();
     }
 }
