@@ -13,6 +13,10 @@ class Product {
         this.price = price;
         this.quantity = quantity;
         this.storage = storage;
+
+        if (storage != null) {
+            this.storage.addProduct(this);
+        }
     }
 
     boolean isAvailable() {

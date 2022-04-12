@@ -17,7 +17,6 @@ class Person {
         this.surname = surname;
         this.moneyInCash = moneyInCash;
         this.moneyOnCard = moneyOnCard;
-
         this.historyShoppingCarts = Collections.emptySet();
     }
 
@@ -29,18 +28,47 @@ class Person {
                 ", moneyInCash=" + moneyInCash +
                 ", moneyOnCard=" + moneyOnCard +
                 ", currentShoppingCart=" + currentShoppingCart +
-                ", historyShoppingCarts=" + historyShoppingCarts +
                 '}';
     }
 
-    // TODO:
-    void makeOrder(){
-        System.out.println("not implemented yet");
+
+    void makeOrder() {
+        if (this.currentShoppingCart != null) {
+            System.out.println("Masz już aktywny koszyk. Dokończ zakupy płacąc kartą lub gotówką");
+            return;
+        }
+        this.currentShoppingCart = new ShoppingCart();
     }
-   void buyByCard(){
-       System.out.println("not implemented yet");
-   }
-   void buyInCash(){
-       System.out.println("not implemented yet");
-   }
+
+    void buyByCard() {
+        if (this.currentShoppingCart == null) {
+            System.out.println("Nie masz nic w koszyku. Zacznij zakupy uruchamiając metodę 'makeOrder'");
+            return;
+        }
+
+        if (this.moneyOnCard >= this.currentShoppingCart.totalPrice) {
+            this.moneyOnCard = this.moneyOnCard - this.currentShoppingCart.totalPrice;
+            this.historyShoppingCarts.add(this.currentShoppingCart);
+            this.currentShoppingCart = null;
+        } else {
+            System.out.println("Nie masz wystarczającej ilości pieniędzy na karcie. Spróbuj zapłacić gotówką");
+        }
+    }
+
+    void buyInCash() {
+        if (this.currentShoppingCart == null) {
+            System.out.println("Nie masz nic w koszyku. Zacznij zakupy uruchamiając metodę 'makeOrder'");
+            return;
+        }
+
+        if (this.moneyInCash >= this.currentShoppingCart.totalPrice) {
+            this.moneyInCash = this.moneyInCash - this.currentShoppingCart.totalPrice;
+            this.historyShoppingCarts.add(this.currentShoppingCart);
+            this.currentShoppingCart = null;
+        } else {
+            System.out.println("Nie masz wystarczającej ilości gotówki. Spróbuj zapłacić kartą");
+        }
+
+    }
+
 }

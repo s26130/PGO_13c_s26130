@@ -13,7 +13,7 @@ class ShoppingCart {
 
 
     void sell(){
-        System.out.println("not implemented yet");
+
     }
 
     public ShoppingCart() {

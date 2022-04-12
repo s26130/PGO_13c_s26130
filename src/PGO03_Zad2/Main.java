@@ -15,5 +15,22 @@ public class Main {
         System.out.println(p4);
         System.out.println(p5);
 
+        var storageA1 = new Storage(1);
+        var storageCE54 = new Storage(30);
+
+
+        var product1 = new Product("Cisowianka", ProductType.Consumable, 1.69, 1000, null);
+        var product2 = new Product("Kinder Bueno", ProductType.Consumable, 3.21, 1000, storageA1);
+        var product3 = new Product("Bilet do kina", ProductType.Entertainment, 34, 1000, null);
+        var product4 = new Product("Sokowirówka", ProductType.Electronic, 167, 500, storageCE54);
+
     }
+
+
+
+
+
+
+
+
 }
