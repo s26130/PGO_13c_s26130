@@ -1,23 +1,40 @@
 package PGO03_Zad2;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 class Person {
 
-    String name;
-    String surname;
-    double moneyInCash;
-    double moneyOnCard;
-    ShoppingCart currentShoppingCart;
-    Set<ShoppingCart> historyShoppingCarts;
+    private String name;
+    private String surname;
+    private double moneyInCash;
+    private double moneyOnCard;
+    private ShoppingCart currentShoppingCart;
+    private Set<ShoppingCart> historyShoppingCarts;
 
-    public Person(String name, String surname, double moneyInCash, double moneyOnCard) {
+    ShoppingCart getCurrentShoppingCart() {
+        return currentShoppingCart;
+    }
+
+    Person(String name, String surname, double moneyInCash, double moneyOnCard) {
+        if (Utils.isNullorEmpty(name)) {
+            throw new IllegalArgumentException("Imię nie może być nullem ani puste");
+        }
+        if (Utils.isNullorEmpty(surname)) {
+            throw new IllegalArgumentException("Nazwisko nie może byc nullem ani puste");
+        }
+        if (moneyInCash < 0){
+            throw new IllegalArgumentException("Pieniądze nie mogą być ujemne");
+        }
+        if (moneyOnCard < 0){
+            throw new IllegalArgumentException("Pieniądze nie mogą być ujemne");
+        }
+
         this.name = name;
         this.surname = surname;
         this.moneyInCash = moneyInCash;
         this.moneyOnCard = moneyOnCard;
-        this.historyShoppingCarts = Collections.emptySet();
+        this.historyShoppingCarts = new HashSet<>();
     }
 
     @Override
@@ -31,50 +48,49 @@ class Person {
                 '}';
     }
 
-
     void makeOrder() {
         if (this.currentShoppingCart != null) {
             System.out.println("Masz już aktywny koszyk. Dokończ zakupy płacąc kartą lub gotówką");
             return;
         }
-        this.currentShoppingCart = new ShoppingCart(new);
+        this.currentShoppingCart = new ShoppingCart();
     }
 
     void buyByCard() {
-        if (this.currentShoppingCart == null) {
+        if (this.currentShoppingCart == null || this.currentShoppingCart.getProducts().isEmpty()) {
             System.out.println("Nie masz nic w koszyku. Zacznij zakupy uruchamiając metodę 'makeOrder'");
             return;
         }
 
-        if (this.moneyOnCard >= this.currentShoppingCart.totalPrice) {
-            this.moneyOnCard = this.moneyOnCard - this.currentShoppingCart.totalPrice;
+        if (this.moneyOnCard >= this.currentShoppingCart.getTotalPrice()) {
+            this.moneyOnCard = this.moneyOnCard - this.currentShoppingCart.getTotalPrice();
 
             this.currentShoppingCart.sell();
 
             this.historyShoppingCarts.add(this.currentShoppingCart);
             this.currentShoppingCart = null;
+            System.out.println("Udało się zapłacić kartą");
         } else {
             System.out.println("Nie masz wystarczającej ilości pieniędzy na karcie. Spróbuj zapłacić gotówką");
         }
     }
 
     void buyInCash() {
-        if (this.currentShoppingCart == null) {
+        if (this.currentShoppingCart == null || this.currentShoppingCart.getProducts().isEmpty()) {
             System.out.println("Nie masz nic w koszyku. Zacznij zakupy uruchamiając metodę 'makeOrder'");
             return;
         }
 
-        if (this.moneyInCash >= this.currentShoppingCart.totalPrice) {
-            this.moneyInCash = this.moneyInCash - this.currentShoppingCart.totalPrice;
+        if (this.moneyInCash >= this.currentShoppingCart.getTotalPrice()) {
+            this.moneyInCash = this.moneyInCash - this.currentShoppingCart.getTotalPrice();
 
             this.currentShoppingCart.sell();
 
             this.historyShoppingCarts.add(this.currentShoppingCart);
             this.currentShoppingCart = null;
+            System.out.println("Udało się zapłacić gotówką");
         } else {
             System.out.println("Nie masz wystarczającej ilości gotówki. Spróbuj zapłacić kartą");
         }
-
     }
-
 }

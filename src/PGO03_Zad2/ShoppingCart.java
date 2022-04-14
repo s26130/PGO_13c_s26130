@@ -1,31 +1,40 @@
 package PGO03_Zad2;
 
+import java.util.ArrayList;
 import java.util.List;
-
-
 
 class ShoppingCart {
     private static int nextId = 1;
-    int id;
-    double totalPrice;
-    int totalDeliveryTime;
-    List<Product> products;
+    private int id;
+    private double totalPrice;
+    private int totalDeliveryTime;
+    private List<Product> products;
 
-    public ShoppingCart(List<Product> products) {
-        if (products == null) {
-            throw new IllegalArgumentException("Lista produktów nie może byc nullem");
-        }
+     ShoppingCart() {
         this.id = generateNextId();
-        this.products = products;
-
-        this.calculatePrice();
-        this.calculateDeliveryTime();
+        this.products = new ArrayList<>();/**/
     }
 
     void sell(){
         for (var product : this.products){
             product.sell();
         }
+        System.out.println("Koszyk został sprzedany: " + this);
+    }
+
+    void addProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Produkt nie może być nullem");
+        }
+
+        if (!product.isAvailable()) {
+            System.out.println("Produkt " + product.getName() + " nie jest dostępny");
+            return;
+        }
+
+        this.products.add(product);
+        this.calculatePrice();
+        this.calculateDeliveryTime();
     }
 
     private static int generateNextId() {
@@ -37,7 +46,7 @@ class ShoppingCart {
     private void calculatePrice() {
         double sum = 0;
         for (var product : this.products) {
-            sum += product.price;
+            sum += product.getPrice();
         }
 
         this.totalPrice = sum;
@@ -45,13 +54,31 @@ class ShoppingCart {
 
     private void calculateDeliveryTime() {
         for (var product : this.products) {
-            if (product.storage == null) {
+            if (product.getStorage() == null) {
                 continue; // dostepny od reki
             }
 
-            if (this.totalDeliveryTime < product.storage.deliveryTime) {
-                this.totalDeliveryTime = product.storage.deliveryTime;
+            if (this.totalDeliveryTime < product.getStorage().getDeliveryTime()) {
+                this.totalDeliveryTime = product.getStorage().getDeliveryTime();
             }
         }
+    }
+
+     double getTotalPrice() {
+        return totalPrice;
+    }
+
+   List<Product> getProducts() {
+        return products;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingCart{" +
+                "id=" + id +
+                ", totalPrice=" + totalPrice +
+                ", totalDeliveryTime=" + totalDeliveryTime +
+                ", products=" + products +
+                '}';
     }
 }
