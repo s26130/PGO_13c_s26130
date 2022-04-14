@@ -37,7 +37,7 @@ class Person {
             System.out.println("Masz już aktywny koszyk. Dokończ zakupy płacąc kartą lub gotówką");
             return;
         }
-        this.currentShoppingCart = new ShoppingCart();
+        this.currentShoppingCart = new ShoppingCart(new);
     }
 
     void buyByCard() {
@@ -48,6 +48,9 @@ class Person {
 
         if (this.moneyOnCard >= this.currentShoppingCart.totalPrice) {
             this.moneyOnCard = this.moneyOnCard - this.currentShoppingCart.totalPrice;
+
+            this.currentShoppingCart.sell();
+
             this.historyShoppingCarts.add(this.currentShoppingCart);
             this.currentShoppingCart = null;
         } else {
@@ -63,6 +66,9 @@ class Person {
 
         if (this.moneyInCash >= this.currentShoppingCart.totalPrice) {
             this.moneyInCash = this.moneyInCash - this.currentShoppingCart.totalPrice;
+
+            this.currentShoppingCart.sell();
+
             this.historyShoppingCarts.add(this.currentShoppingCart);
             this.currentShoppingCart = null;
         } else {

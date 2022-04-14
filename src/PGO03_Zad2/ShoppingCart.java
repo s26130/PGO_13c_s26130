@@ -11,18 +11,47 @@ class ShoppingCart {
     int totalDeliveryTime;
     List<Product> products;
 
+    public ShoppingCart(List<Product> products) {
+        if (products == null) {
+            throw new IllegalArgumentException("Lista produktów nie może byc nullem");
+        }
+        this.id = generateNextId();
+        this.products = products;
 
-    void sell(){
-
+        this.calculatePrice();
+        this.calculateDeliveryTime();
     }
 
-    public ShoppingCart() {
-        this.id = generateNextId();
+    void sell(){
+        for (var product : this.products){
+            product.sell();
+        }
     }
 
     private static int generateNextId() {
         var currentId = nextId;
         nextId = nextId ++;
         return currentId;
+    }
+
+    private void calculatePrice() {
+        double sum = 0;
+        for (var product : this.products) {
+            sum += product.price;
+        }
+
+        this.totalPrice = sum;
+    }
+
+    private void calculateDeliveryTime() {
+        for (var product : this.products) {
+            if (product.storage == null) {
+                continue; // dostepny od reki
+            }
+
+            if (this.totalDeliveryTime < product.storage.deliveryTime) {
+                this.totalDeliveryTime = product.storage.deliveryTime;
+            }
+        }
     }
 }

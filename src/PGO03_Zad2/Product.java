@@ -6,6 +6,7 @@ class Product {
     double price;
     int quantity;
     Storage storage;
+    boolean isAvailable;
 
     public Product(String name, ProductType productType, double price, int quantity, Storage storage) {
         this.name = name;
@@ -19,19 +20,20 @@ class Product {
         }
     }
 
-    boolean isAvailable() {
-        return quantity > 0;
-    }
-
-    // TODO:
     void sell() {
-        System.out.println("not implemented yet");
+        if (quantity > 0) {
+            quantity --;
+        } else {
+            throw new RuntimeException("Product is not available");
+        }
     }
-
-    // TODO:
 
     void increaseQuantity(int quantity) {
-        System.out.println("not implemented yet");
-    }
+        if (quantity < 0 ) {
+            throw new IllegalArgumentException("Nie można dodać ujemnej liczby produktów!");
+        }
 
+        this.quantity += quantity;
+        System.out.println("W magazynie znajduje się " + this.quantity + " sztuk " + this.name);
+    }
 }
