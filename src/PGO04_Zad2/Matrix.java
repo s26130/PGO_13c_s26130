@@ -7,7 +7,6 @@ public class Matrix {
     private static int[][] temporaryContent;
     private static int nextRow;
 
-
     private Matrix() {};
 
     void print() {
@@ -87,16 +86,7 @@ public class Matrix {
         return result;
     }
 
-    /*
-    1 7
-    3 4
-    9 9
-
-    1 2 3 4
-    9 0 1 0
-     */
     Matrix multiply(Matrix m) {
-        validateForMultiply(this, m);
         var result = multiply(this, m);
 
         return result;
@@ -105,20 +95,21 @@ public class Matrix {
     Matrix multiply(Matrix m1, Matrix m2) {
         validateForMultiply(m1, m2);
 
-        var rows = m1.content.length;
-        var cols = m2.content[0].length;
-        setUpMatrix(rows, cols);
+        var r1 = m1.content.length;
+        var c2 = m2.content[0].length;
+        var c1 = m1.content[0].length;
+        setUpMatrix(r1, c2);
 
-        for(int i = 0; i< rows; i++) {
-            var newRow = new int[cols];
+        for(int i = 0; i < r1; i++) {
+            var newRow = new int[c2];
 
-            for (int j = 0; j < cols; j++) {
+            for (int j = 0; j < c2; j++) {
                 var cell = 0;
-                for (int k = 0; k < rows; k++) {
+                for (int k = 0; k < c1; k++) {
                     cell += m1.content[i][k] * m2.content[k][j];
                 }
 
-                newRow[i] = cell;
+                newRow[j] = cell;
             }
             insertRow(newRow);
         }
